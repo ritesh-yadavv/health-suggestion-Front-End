@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
+import api from "../api"
 
 import { useAuthContext } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +17,7 @@ function useSignup() {
             return
         try{
             setLoading(true)
-            const res = await axios.post('https://healthsuggestionbackend.netlify.app/api/auth/signup',{
+            const res = await axios.post(`${api}/api/auth/signup`,{
                 name,
                 username,
                 password,

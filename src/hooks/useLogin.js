@@ -3,49 +3,47 @@ import { useAuthContext } from "../context/AuthContext"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import axios from 'axios'
-export const useLogin = ()=>{
+import api from "../api"
+export const useLogin = () => {
     const [loading, setLoading] = useState(false)
-    const {setUser} = useAuthContext()
+    const { setUser } = useAuthContext()
     const navigate = useNavigate()
 
-    const login = async ({username,password})=>{
-        const success = verifyInputs({  username, password})
+    const login = async ({ username, password }) => {
+        const success = verifyInputs({ username, password })
         if (!success)
             return
 
-        try{
+        try {
             setLoading(true)
             // console.log(loading)
-            const res = await axios.post('https://healthsuggestionbackend.netlify.app/api/auth/login',{
+            const res = await axios.post(`${api}/api/auth/login`, {
                 username,
                 password
-            },{withCredentials:true})
+            }, { withCredentials: true })
             toast.success("Log In successfull")
-            localStorage.setItem("Healthuser",JSON.stringify(res.data))
+            localStorage.setItem("Healthuser", JSON.stringify(res.data))
             setUser(res.data)
             navigate("/")
-      
-        }catch(error)
-        {
+
+        } catch (error) {
             toast.error(error.response.data.error)
-        }finally{
+        } finally {
             setLoading(false)
             // console.log(loading)
         }
     }
 
-    return {loading , login} 
+    return { loading, login }
 
 }
 
-const verifyInputs = ({username,password})=>{
-    if(!username || !password)
-    {
+const verifyInputs = ({ username, password }) => {
+    if (!username || !password) {
         toast.error("fields are empty")
         return false
     }
-    if(password.length <  4)
-    {
+    if (password.length < 4) {
         toast.error("password have to be atleast 4 or more characters")
         return false
     }

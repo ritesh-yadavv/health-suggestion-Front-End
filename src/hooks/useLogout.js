@@ -3,6 +3,7 @@ import { useState } from "react"
 import {useNavigate} from 'react-router-dom'
 import toast from "react-hot-toast"
 import { useAuthContext } from "../context/AuthContext"
+import api from "../api"
 
 function useLogout() {
 
@@ -14,7 +15,7 @@ function useLogout() {
         if(!user)
             return
         try {
-            await axios.post('https://healthsuggestionbackend.netlify.app/api/auth/logout',{withCredentials:true})
+            await axios.post(`${api}/api/auth/logout`,{withCredentials:true})
             localStorage.removeItem("Healthuser")
             setUser(null)
             navigate("/")
